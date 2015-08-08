@@ -1,0 +1,29 @@
+h1 Listing free_insurances
+
+table
+  thead
+    tr
+      th User
+      th Mobile
+      th Birthday
+      th Processed
+      th Accepted
+      th
+      th
+      th
+
+  tbody
+    - @free_insurances.each do |free_insurance|
+      tr
+        td = free_insurance.user
+        td = free_insurance.mobile
+        td = free_insurance.birthday
+        td = free_insurance.processed
+        td = free_insurance.accepted
+        td = link_to 'Show', free_insurance
+        td = link_to 'Edit', edit_free_insurance_path(free_insurance)
+        td = link_to 'Destroy', free_insurance, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Free insurance', new_free_insurance_path

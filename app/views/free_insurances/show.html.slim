@@ -1,0 +1,22 @@
+.col-xs-12.col-sm-12.col-md-12.col-lg-12
+  .h1.text-primary 您的免费保险详情
+  hr
+
+  - if notice
+    #notice.alert.alert-success
+      = notice
+      a.close type="button" data-dismiss="alert" &times;
+  - elsif alert
+    #notice.alert.alert-error
+      = alert
+      a.close type="button" data-dismiss="alert" &times;
+
+  = simple_form_for(@free_insurance) do |b|
+    - b.with_options disabled: true do |b|
+      = render :partial => 'insurace', :locals => { :f => b }
+
+  hr
+
+  / = link_to 'Edit', edit_free_insurance_path(@free_insurance)
+  / '|
+  / = link_to 'Back', free_insurances_path

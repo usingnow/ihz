@@ -1,0 +1,9 @@
+zh-CN:
+  activerecord:
+    attributes:
+      free_insurance:
+        user: "姓名"
+        mobile: "手机"
+        birthday: "生日"
+        processed: "申请已处理"
+        accepted: "申请已接受"

@@ -1,0 +1,2 @@
+module FreeInsurancesHelper
+end

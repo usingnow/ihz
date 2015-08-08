@@ -1,0 +1,12 @@
+= simple_form_for(@free_insurance) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :user
+    = f.input :mobile
+    = f.input :birthday, as: :date
+    = f.input :processed
+    = f.input :accepted
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'

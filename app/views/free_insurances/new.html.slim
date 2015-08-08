@@ -1,0 +1,18 @@
+.col-xs-12.col-sm-12.col-md-12.col-lg-12
+  h1.text-primary 领取您的免费保险
+  hr
+
+  = simple_form_for(@free_insurance) do |f|
+    = f.error_notification
+
+    .form-inputs
+      = f.input :user
+      = f.input :mobile, as: :tel, placeholder: "11位手机号，例如：13912345678"
+      = f.input :email, as: :email, placeholder: "someone@email.com" 
+      = f.input :birthday, as: :date, start_year: Date.today.year - 60,
+                end_year: Date.today.year - 18
+    hr
+    .form-actions
+      = f.button :submit, "立即领取", class: 'btn btn-primary btn-lg btn-block'
+
+/ = link_to 'Back', free_insurances_path
