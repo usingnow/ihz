@@ -13,6 +13,12 @@
                 end_year: Date.today.year - 18
     hr
     .form-actions
-      = f.button :submit, "立即领取", class: 'btn btn-primary btn-lg btn-block'
+      / = f.button :submit, "立即领取", class: 'btn btn-primary btn-lg btn-block'
+      /   i.fa.fa-hand-pointer-o
+
+      = button_tag(type: 'submit', class: "btn btn-primary btn-lg btn-block") do
+        = fa_icon "hand-pointer-o"
+        ' 
+        '立即领取
 
 / = link_to 'Back', free_insurances_path

@@ -19,6 +19,7 @@ gem 'slim-rails'
 # Use Bootstrap
 gem 'less-rails'
 gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'bootstrap3'
+gem 'font-awesome-rails'
 # Use Simple Form
 gem 'simple_form'
 
