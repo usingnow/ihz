@@ -1,0 +1,28 @@
+.col-xs-12.col-sm-12.col-md-12.col-lg-12
+
+  h1.text-primary 查询您的免费保险
+  hr
+
+  - if notice
+    .alert.alert-success
+      = notice
+      a.close type="button" data-dismiss="alert" &times;
+  - elsif alert
+    .alert.alert-danger
+      = alert
+      a.close type="button" data-dismiss="alert" &times;
+
+  = form_tag search_result_of_free_insurances_path, method: 'get', class: 'simple-form' do
+
+    .form-inputs
+      .form-group
+        = text_field_tag :user, params[:user], class: "string form-control", placeholder:"您的姓名"
+      .form-group
+        = text_field_tag :mobile, params[:mobile], class: "string form-control", placeholder: "手机号码"
+    .form-actions
+      = submit_tag "搜索", :name => nil, class: "btn btn-primary btn-lg btn-block"
+  hr
+  .alert.alert-info
+    =fa_icon "exclamation-circle"
+    ' 
+    '请确保您填写申请时的姓名和手机号码，否则可能无法查询到您的记录。

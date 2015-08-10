@@ -1,10 +1,17 @@
 Rails.application.routes.draw do
-  resources :free_insurances
+  resources :free_insurances do
+    member do
+      get :search_page_of
+    end
+    collection do
+      get :search_result_of
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'free_insurances#search_page_of'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

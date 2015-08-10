@@ -64,6 +64,22 @@ class FreeInsurancesController < ApplicationController
     end
   end
 
+  # As the root page of the free insurance, which show the search form.
+  def search_page_of
+
+  end
+
+  # To search the free insurace with user's name and mobile.
+  def search_result_of
+    result = FreeInsurance.search(params[:user], params[:mobile])
+    @free_insurance = result.first
+    if @free_insurance.blank?
+      redirect_to :back, alert: "查无此单。请确认姓名与手机是否准确。"
+    else
+      @free_insurance
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_free_insurance

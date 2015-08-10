@@ -1,0 +1,36 @@
+.col-xs-12.col-sm-12.col-md-12.col-lg-12
+  .h1.text-primary 您的免费保险详情
+  hr
+
+  - if notice
+    #notice.alert.alert-success
+      = notice
+      a.close type="button" data-dismiss="alert" &times;
+  - elsif alert
+    #notice.alert.alert-danger
+      = alert
+      a.close type="button" data-dismiss="alert" &times;
+
+  = simple_form_for(@free_insurance) do |b|
+    - b.with_options disabled: true do |b|
+      = render :partial => 'insurace', :locals => { :f => b }
+
+  hr
+
+  h3
+    span.label.label-primary.block
+      '申请记录
+      span.badage
+      - if @free_insurance.accepted
+        = fa_icon "check"
+      - else
+        = fa_icon "remove"
+
+  h3
+    span.label.label-success.block
+      '保单生效
+      span.badage
+      - if @free_insurance.processed
+        = fa_icon "check"
+      - else
+        = fa_icon "remove"
