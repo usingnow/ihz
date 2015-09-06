@@ -23,6 +23,11 @@ gem 'font-awesome-rails'
 # Use Simple Form
 gem 'simple_form'
 
+# parse XML
+gem 'nokogiri'
+# Handle SOAP API
+gem 'savon'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

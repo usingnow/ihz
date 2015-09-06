@@ -11,17 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150808092113) do
+ActiveRecord::Schema.define(version: 20150905053534) do
 
   create_table "free_insurances", force: :cascade do |t|
-    t.string   "user",       limit: 255
-    t.string   "mobile",     limit: 255
+    t.string   "user",             limit: 255
+    t.string   "mobile",           limit: 255
     t.date     "birthday"
     t.boolean  "processed"
     t.boolean  "accepted"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "email",      limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "email",            limit: 255
+    t.boolean  "gender"
+    t.string   "id_num",           limit: 255
+    t.string   "id_type",          limit: 255
+    t.string   "province",         limit: 255
+    t.string   "city",             limit: 255
+    t.string   "address",          limit: 255
+    t.boolean  "accepted_terms"
+    t.boolean  "accepted_notices"
+    t.boolean  "activated"
   end
 
 end

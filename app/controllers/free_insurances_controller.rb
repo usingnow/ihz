@@ -28,6 +28,22 @@ class FreeInsurancesController < ApplicationController
   def create
     @free_insurance = FreeInsurance.new(free_insurance_params)
     @free_insurance.accepted = true
+    @free_insurance.province = "成都市"
+    @free_insurance.city = "成都市"
+    @free_insurance.address = "成都市"
+    @free_insurance.id_type = "IdentityCard"
+    @free_insurance.save
+    begin
+      response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
+      
+      if response
+        @free_insurance.processed = true if response.hash == "承保成功"
+      else
+        @free_insurance.processed = false
+      end
+    rescue
+      @free_insurance.processed = false
+    end
 
     respond_to do |format|
       if @free_insurance.save
@@ -80,6 +96,20 @@ class FreeInsurancesController < ApplicationController
     end
   end
 
+  def validate_user_of
+
+  end
+
+  def validate_result_of
+    result = FreeInsurance.search(params[:user], params[:mobile])
+    @free_insurance = result.first
+    if @free_insurance.blank?
+      redirect_to :new_free_insurance, alert: "查无此单。请确认您输入的信息，或者选择新建您的订单记录。"
+    else # Make sure there are other logics here.
+      @free_insurance
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_free_insurance
@@ -88,6 +118,8 @@ class FreeInsurancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def free_insurance_params
-      params.require(:free_insurance).permit(:user, :mobile, :birthday, :processed, :accepted, :email)
+      params.require(:free_insurance).permit(:user, :mobile, :birthday, :processed, :accepted, :email,
+                                             :id_num, :id_type, :gender, :accepted_terms, :accepted_notices,
+                                             :processed, :province, :city, :address, :activated)
     end
 end

@@ -1,19 +1,44 @@
 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-  h1.text-primary 领取您的免费保险
+  h1.text-primary 核实您的信息
   hr
+
+  - if notice
+    .alert.alert-success
+      = notice
+      a.close type="button" data-dismiss="alert" &times;
+  - elsif alert
+    .alert.alert-danger
+      = alert
+      a.close type="button" data-dismiss="alert" &times;
 
   = simple_form_for(@free_insurance) do |f|
     = f.error_notification
 
     .form-inputs
       = f.input :user
+
+      = f.input :gender, 
+          collection: [[true, '男'], [false, '女']], 
+          label_method: :last, 
+          value_method: :first,
+          as: :radio_buttons, 
+          item_wrapper_class: 'radio-inline',
+          checked: true,
+          label: false
+
+      = f.input :id_num, placeholder: "身份证号码"
+
       = f.input :mobile, as: :tel, placeholder: "11位手机号，例如：13912345678"
       = f.input :email, as: :email, placeholder: "someone@email.com" 
       = f.input :birthday, as: :date, start_year: Date.today.year - 60,
-                end_year: Date.today.year - 18
+                end_year: Date.today.year - 18, html5: true
+      = f.input :city, disabled: true, value: "成都市", placeholder: "成都市"
+      = f.input :accepted_terms, as: :boolean, checked_value: true, unchecked_value: false
+      = f.input :accepted_notices, as: :boolean, checked_value: true, unchecked_value: false
     hr
     .form-actions
       = button_tag(type: 'submit', class: "btn btn-primary btn-lg btn-block") do
         = fa_icon "hand-pointer-o"
         ' 
         '立即领取
+    br

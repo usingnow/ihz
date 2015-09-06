@@ -5,19 +5,22 @@ Rails.application.routes.draw do
     end
     collection do
       get :search_result_of
+      get :validate_result_of
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'free_insurances#search_page_of'
+  root 'free_insurances#validate_user_of'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+
+  get 'validate_user_of' => 'free_insurances#validate_user_of', as: :validate_user_of
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
