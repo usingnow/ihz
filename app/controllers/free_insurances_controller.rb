@@ -110,6 +110,10 @@ class FreeInsurancesController < ApplicationController
     end
   end
 
+  def all_terms
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_free_insurance
@@ -119,7 +123,7 @@ class FreeInsurancesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def free_insurance_params
       params.require(:free_insurance).permit(:user, :mobile, :birthday, :processed, :accepted, :email,
-                                             :id_num, :id_type, :gender, :accepted_terms, :accepted_notices,
+                                             :id_num, :id_type, :gender, :accepted_all_terms,
                                              :processed, :province, :city, :address, :activated)
     end
 end

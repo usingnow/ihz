@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
   get 'validate_user_of' => 'free_insurances#validate_user_of', as: :validate_user_of
+  get 'all_terms' => 'free_insurances#all_terms', as: :all_terms
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
