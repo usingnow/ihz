@@ -33,7 +33,7 @@ class FreeInsurancesController < ApplicationController
     @free_insurance.address = "成都市"
     @free_insurance.id_type = "IdentityCard"
     # @free_insurance.save
-    begin
+    # begin
       response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
       
       if FreeInsurance.response_from_metlife(response)
@@ -41,9 +41,9 @@ class FreeInsurancesController < ApplicationController
       else
         @free_insurance.processed = false
       end
-    rescue
-      @free_insurance.processed = false
-    end
+    # rescue
+    #   @free_insurance.processed = false
+    # end
 
     respond_to do |format|
       if @free_insurance.save

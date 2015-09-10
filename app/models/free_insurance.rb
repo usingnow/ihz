@@ -74,7 +74,7 @@ class FreeInsurance < ActiveRecord::Base
           xml.TSR {
             xml.Code '805095'
           }
-          xml.DonateTime fi.created_at.to_date.to_s
+          xml.DonateTime Date.current.to_s(:db)
           xml.SMS '1'
           xml.FlightNo
           xml.ValidTime
@@ -82,18 +82,17 @@ class FreeInsurance < ActiveRecord::Base
       }
     }
 
-    return xml
+    return data
   end
 
   # Send the xml via SOAP
   def self.send_to_metlife(fi)
     # Connect to MetLife SOAP API via wsdl.
-    client = Savon::Client.new(wsdl: "http://icare.metlife.com.cn/services/YSW2ICareSave?wsdl")
+    client = Savon.client(wsdl: "http://icare.metlife.com.cn/services/YSW2ICareSave?wsdl", encoding: "GBK")
     msg = FreeInsurance.build_xml_of_free_insurance(fi)
-    # puts '-----'
-    # puts msg
-    # puts '-----'
-    response = client.call(:do_request, massage: { xml_input: msg })
+    response = client.call(:do_request, message: { xml_input: msg })
+
+    puts response.body
 
     return response
   end
@@ -102,7 +101,7 @@ class FreeInsurance < ActiveRecord::Base
     if response.nil?
       return false
     else
-      result = Nokogiri::XML(response.to_hash[:envelope][:body][:do_request_response][:do_request_return])
+      result = Nokogiri::XML(response.hash[:envelope][:body][:do_request_response][:do_request_return])
 
       # Need to consider to add the message into the db as one of the status remark.
       if result.xpath("//Flag").text == "TRUE"
