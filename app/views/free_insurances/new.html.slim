@@ -34,7 +34,7 @@
                 end_year: Date.today.year - 18, html5: true
       = f.input :city, disabled: true, value: "成都市", placeholder: "成都市"
       = f.input :accepted_all_terms, as: :boolean, checked_value: true, unchecked_value: false
-      = link_to '须知与条款详情', all_terms_path, class: 'terms'
+      = link_to '投保须知详情', all_terms_path, class: 'terms'
     hr
     .form-actions
       = button_tag(type: 'submit', class: "btn btn-primary btn-lg btn-block") do
