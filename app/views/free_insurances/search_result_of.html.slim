@@ -14,23 +14,22 @@
   = simple_form_for(@free_insurance) do |b|
     - b.with_options disabled: true do |b|
       = render :partial => 'insurace', :locals => { :f => b }
+  br
 
-  hr
+  / h3
+  /   span.label.label-primary.block
+  /     '申请记录
+  /     span.badage
+  /     - if @free_insurance.accepted
+  /       = fa_icon "check"
+  /     - else
+  /       = fa_icon "remove"
 
-  h3
-    span.label.label-primary.block
-      '申请记录
-      span.badage
-      - if @free_insurance.accepted
-        = fa_icon "check"
-      - else
-        = fa_icon "remove"
-
-  h3
-    span.label.label-success.block
-      '保单生效
-      span.badage
-      - if @free_insurance.processed
-        = fa_icon "check"
-      - else
-        = fa_icon "remove"
+  / h3
+  /   span.label.label-success.block
+  /     '保单生效
+  /     span.badage
+  /     - if @free_insurance.processed
+  /       = fa_icon "check"
+  /     - else
+  /       = fa_icon "remove"

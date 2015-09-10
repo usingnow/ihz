@@ -29,7 +29,7 @@ class FreeInsurance < ActiveRecord::Base
   end
 
   # Build xml file.
-  def self.build_xml_of_free_insurance(fi)
+  def self.build_xml_of_free_insurance(fi, present_code)
     data = ''
     xml = ::Builder::XmlMarkup.new(target: data, indent: 0)
     # xml.instruct!
@@ -69,7 +69,7 @@ class FreeInsurance < ActiveRecord::Base
         xml.Activity {
           xml.Code ''
           xml.Present {
-            xml.Code 'PC0000000150'
+            xml.Code present_code
           }
           xml.TSR {
             xml.Code '805095'
@@ -87,28 +87,36 @@ class FreeInsurance < ActiveRecord::Base
 
   # Send the xml via SOAP
   def self.send_to_metlife(fi)
+    pc = Array['PC0000000139', 'PC0000000151', 'PC0000000150', 'PC0000000167']
     # Connect to MetLife SOAP API via wsdl.
     client = Savon.client(wsdl: "http://icare.metlife.com.cn/services/YSW2ICareSave?wsdl", encoding: "GBK")
-    msg = FreeInsurance.build_xml_of_free_insurance(fi)
-    response = client.call(:do_request, message: { xml_input: msg })
+    
+    msg = Hash.new
 
-    puts response.body
+    pc.each do |present_code|
+      msg[present_code] = FreeInsurance.build_xml_of_free_insurance(fi, present_code)
+    end
 
+    response = Hash.new
+    
+    msg.each do |key, message|
+      response[key] = client.call(:do_request, message: { xml_input: message })
+      puts response[key].body
+    end
     return response
   end
 
   def self.response_from_metlife(response)
     if response.nil?
-      return false
+      return nil
     else
-      result = Nokogiri::XML(response.hash[:envelope][:body][:do_request_response][:do_request_return])
-
-      # Need to consider to add the message into the db as one of the status remark.
-      if result.xpath("//Flag").text == "TRUE"
-        return true
-      else
-        return false
+      result = Hash.new
+      response.each do |key, response|
+        response_body = Nokogiri::XML(response.hash[:envelope][:body][:do_request_response][:do_request_return])
+        result[key] = [response_body.xpath("//Flag").text, response_body.xpath("//Message").text, response_body.xpath("//FreeInsureNo").text]
       end
     end
+
+    return result
   end
 end

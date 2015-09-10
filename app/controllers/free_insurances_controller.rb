@@ -33,23 +33,40 @@ class FreeInsurancesController < ApplicationController
     @free_insurance.address = "成都市"
     @free_insurance.id_type = "IdentityCard"
     # @free_insurance.save
-    # begin
+    begin
       response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
       
-      if FreeInsurance.response_from_metlife(response)
+      result = FreeInsurance.response_from_metlife(response)
+
+      # puts '-------'
+      # puts 'This is result'
+      # puts result
+      # puts result.class
+
+      if result
+        fi_num = ""
+        result.each do |key, value|
+          # puts "This is value"
+          # puts value
+          # puts "----------"
+          fi_num << value[2] + " | "
+          # puts fi_num
+        end
         @free_insurance.processed = true
+        @free_insurance.free_insurance_no = fi_num
       else
         @free_insurance.processed = false
       end
-    # rescue
-    #   @free_insurance.processed = false
-    # end
+    rescue
+      @free_insurance.processed = false
+    end
 
     respond_to do |format|
       if @free_insurance.save
         format.html { redirect_to @free_insurance, notice: '您的免费保险申请已经通过保险公司审核。' }
         format.json { render :show, status: :created, location: @free_insurance }
       else
+        flash[:alert] = "无法承保，请核实您的信息。或者联系客服邮箱：3353512440@qq.com。"
         format.html { render :new }
         format.json { render json: @free_insurance.errors, status: :unprocessable_entity }
       end
@@ -130,6 +147,7 @@ class FreeInsurancesController < ApplicationController
     def free_insurance_params
       params.require(:free_insurance).permit(:user, :mobile, :birthday, :processed, :accepted, :email,
                                              :id_num, :id_type, :gender, :accepted_all_terms,
-                                             :processed, :province, :city, :address, :activated)
+                                             :processed, :province, :city, :address, :activated,
+                                             :free_insurance_no, :metlife_msg)
     end
 end

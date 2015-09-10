@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150907024122) do
+ActiveRecord::Schema.define(version: 20150910145212) do
 
   create_table "free_insurances", force: :cascade do |t|
     t.string   "user",               limit: 255
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150907024122) do
     t.string   "address",            limit: 255
     t.boolean  "activated"
     t.boolean  "accepted_all_terms"
+    t.string   "metlife_msg",        limit: 255
+    t.string   "free_insurance_no",  limit: 255
   end
 
 end
