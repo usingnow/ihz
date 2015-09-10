@@ -47,7 +47,7 @@ class FreeInsurancesController < ApplicationController
 
     respond_to do |format|
       if @free_insurance.save
-        format.html { redirect_to @free_insurance, notice: '您的免费保险申请已经成功记录' }
+        format.html { redirect_to @free_insurance, notice: '您的免费保险申请已经通过保险公司审核。' }
         format.json { render :show, status: :created, location: @free_insurance }
       else
         format.html { render :new }
