@@ -32,12 +32,12 @@ class FreeInsurancesController < ApplicationController
     @free_insurance.city = "成都市"
     @free_insurance.address = "成都市"
     @free_insurance.id_type = "IdentityCard"
-    @free_insurance.save
+    # @free_insurance.save
     begin
       response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
       
-      if response
-        @free_insurance.processed = true if response.hash == "承保成功"
+      if FreeInsurance.response_from_metlife(response)
+        @free_insurance.processed = true
       else
         @free_insurance.processed = false
       end

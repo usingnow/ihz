@@ -6,7 +6,7 @@ class FreeInsurance < ActiveRecord::Base
   validates_uniqueness_of :mobile, message: "该手机已经领取过，请核实，谢谢。"
   validates_format_of :mobile, with: /^0?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/, :multiline => true, message: "请确保您填写是有效手机号码。"
   validates_format_of :email, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :multiline => true, message: "请填写有效邮件地址。"
-  validates_acceptance_of :all_terms
+  validates_acceptance_of :all_terms, message: "请确认已经充分理解保险须知和条款。"
 
   private
 
@@ -69,12 +69,12 @@ class FreeInsurance < ActiveRecord::Base
         xml.Activity {
           xml.Code ''
           xml.Present {
-            xml.Code ''
+            xml.Code 'PC0000000150'
           }
           xml.TSR {
             xml.Code '805095'
           }
-          xml.DonateTime fi.created_at
+          xml.DonateTime fi.created_at.to_date.to_s
           xml.SMS '1'
           xml.FlightNo
           xml.ValidTime
@@ -88,13 +88,28 @@ class FreeInsurance < ActiveRecord::Base
   # Send the xml via SOAP
   def self.send_to_metlife(fi)
     # Connect to MetLife SOAP API via wsdl.
-    client = Savon::Client.new(wsdl: "http://icare-uat.metlife.com.cn/services/YSW2ICareSave?wsdl")
+    client = Savon::Client.new(wsdl: "http://icare.metlife.com.cn/services/YSW2ICareSave?wsdl")
     msg = FreeInsurance.build_xml_of_free_insurance(fi)
-    puts '-----'
-    puts msg
-    puts '-----'
-    response = client.call(:do_request, xml: msg)
+    # puts '-----'
+    # puts msg
+    # puts '-----'
+    response = client.call(:do_request, massage: { xml_input: msg })
 
     return response
+  end
+
+  def self.response_from_metlife(response)
+    if response.nil?
+      return false
+    else
+      result = Nokogiri::XML(response.to_hash[:envelope][:body][:do_request_response][:do_request_return])
+
+      # Need to consider to add the message into the db as one of the status remark.
+      if result.xpath("//Flag").text == "TRUE"
+        return true
+      else
+        return false
+      end
+    end
   end
 end
