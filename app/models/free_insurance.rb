@@ -113,7 +113,7 @@ class FreeInsurance < ActiveRecord::Base
       result = Hash.new
       response.each do |key, response|
         response_body = Nokogiri::XML(response.hash[:envelope][:body][:do_request_response][:do_request_return])
-        result[key] = [response_body.xpath("//Flag").text, response_body.xpath("//Message").text, response_body.xpath("//FreeInsureNo").text]
+        result[key] = [response_body.xpath("//FreeInsureNo").text]
       end
     end
 

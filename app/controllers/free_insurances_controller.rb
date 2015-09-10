@@ -49,7 +49,7 @@ class FreeInsurancesController < ApplicationController
           # puts "This is value"
           # puts value
           # puts "----------"
-          fi_num << value[2] + " | "
+          fi_num << value.join(',') + " "
           # puts fi_num
         end
         @free_insurance.processed = true
