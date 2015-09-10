@@ -104,7 +104,13 @@ class FreeInsurancesController < ApplicationController
     result = FreeInsurance.search(params[:user], params[:mobile])
     @free_insurance = result.first
     if @free_insurance.blank?
-      redirect_to :new_free_insurance, alert: "查无此单。请确认您输入的信息，或者选择新建您的订单记录。"
+      @free_insurance = FreeInsurance.new
+      @free_insurance.user = params[:user]
+      @free_insurance.mobile = params[:mobile]
+      respond_to do |format|
+        flash[:alert] = "查无此单。请确认您输入的信息，或者选择新建您的订单记录。"
+        format.html { render :new }
+      end
     else # Make sure there are other logics here.
       @free_insurance
     end
