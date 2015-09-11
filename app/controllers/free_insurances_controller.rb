@@ -38,19 +38,14 @@ class FreeInsurancesController < ApplicationController
       
       result = FreeInsurance.response_from_metlife(response)
 
-      # puts '-------'
-      # puts 'This is result'
-      # puts result
-      # puts result.class
+      puts '-------'
+      puts result
 
       if result
         fi_num = ""
         result.each do |key, value|
-          # puts "This is value"
-          # puts value
-          # puts "----------"
-          fi_num << value.join(',') + " "
-          # puts fi_num
+          fi_num << value.join(',') + " | "
+          puts fi_num
         end
         @free_insurance.processed = true
         @free_insurance.free_insurance_no = fi_num
