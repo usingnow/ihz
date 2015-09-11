@@ -36,7 +36,7 @@
       = f.input :accepted_all_terms, as: :boolean, checked_value: true, unchecked_value: false
       / = link_to '投保须知详情', all_terms_path, class: 'terms'
       / The toggler of the details.
-      a.terms data-toggle="modal" data-target="#myModal" 投保须知详情
+      a.terms href="#" data-toggle="modal" data-target="#myModal" 投保须知详情
 
       / Modal content
       .modal.fade id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
