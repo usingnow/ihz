@@ -32,38 +32,39 @@ class FreeInsurancesController < ApplicationController
     @free_insurance.city = "成都市"
     @free_insurance.address = "成都市"
     @free_insurance.id_type = "IdentityCard"
-    # @free_insurance.save
-    begin
-      response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
-      
-      result = FreeInsurance.response_from_metlife(response)
+    if @free_insurance.save # 如果订单能生成，现在本地验证。
+      begin
+        response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
+        
+        result = FreeInsurance.response_from_metlife(response)
 
-      puts '-------'
-      puts result
+        puts '-------'
+        puts result
 
-      if result
-        fi_num = ""
-        result.each do |key, value|
-          fi_num << value.join(',') + " | "
-          puts fi_num
+        if result
+          fi_num = ""
+          result.each do |key, value|
+            fi_num << value.join(',') + " | "
+            puts fi_num
+          end
+          @free_insurance.processed = true
+          @free_insurance.free_insurance_no = fi_num
+        else
+          @free_insurance.processed = false
         end
-        @free_insurance.processed = true
-        @free_insurance.free_insurance_no = fi_num
-      else
+      rescue
         @free_insurance.processed = false
       end
-    rescue
-      @free_insurance.processed = false
-    end
-
-    respond_to do |format|
-      if @free_insurance.save
-        format.html { redirect_to @free_insurance, notice: '您的免费保险申请已经通过保险公司审核。' }
-        format.json { render :show, status: :created, location: @free_insurance }
-      else
-        flash[:alert] = "无法承保，请核实您的信息。或者联系客服邮箱：3353512440@qq.com。"
-        format.html { render :new }
-        format.json { render json: @free_insurance.errors, status: :unprocessable_entity }
+    else
+      respond_to do |format|
+        if @free_insurance.save
+          format.html { redirect_to @free_insurance, notice: '您的免费保险申请已经通过保险公司审核。' }
+          format.json { render :show, status: :created, location: @free_insurance }
+        else
+          flash[:alert] = "无法承保，请核实您的信息。或者联系客服邮箱：3353512440@qq.com。"
+          format.html { render :new }
+          format.json { render json: @free_insurance.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -133,7 +134,7 @@ class FreeInsurancesController < ApplicationController
   end
 
   def metlife_verification
-    
+
   end
 
   private

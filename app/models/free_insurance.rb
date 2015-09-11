@@ -3,7 +3,8 @@ require 'builder'
 class FreeInsurance < ActiveRecord::Base
   validates_presence_of :user, :mobile, :id_num
   validates_length_of :mobile, is: 11, message: "需填写11位手机号，无需0086或者+86。"
-  validates_uniqueness_of :mobile, message: "该手机已经领取过，请核实，谢谢。"
+  validates_uniqueness_of :mobile, message: "此手机已经领取过，请核实，谢谢。"
+  validates_uniqueness_of :id_num, message: "此身份证已经领取过，请核实，谢谢。"
   validates_format_of :mobile, with: /^0?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/, :multiline => true, message: "请确保您填写是有效手机号码。"
   validates_format_of :email, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :multiline => true, message: "请填写有效邮件地址。"
   validates_acceptance_of :all_terms, message: "请确认已经充分理解保险须知和条款。"
