@@ -1,6 +1,9 @@
 require 'builder'
 
 class FreeInsurance < ActiveRecord::Base
+  belongs_to :preorder
+
+
   validates_presence_of :user, :mobile, :id_num
   validates_length_of :mobile, is: 11, message: "需填写11位手机号，无需0086或者+86。"
   validates_uniqueness_of :mobile, message: "此手机已经领取过，请核实，谢谢。"

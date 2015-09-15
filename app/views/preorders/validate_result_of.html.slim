@@ -1,0 +1,35 @@
+.col-xs-12.col-sm-12.col-md-12.col-lg-12
+  h3.text-primary 请确认您的信息
+  hr
+
+  - if notice
+    #notice.alert.alert-success
+      = notice
+      a.close type="button" data-dismiss="alert" &times;
+  - elsif alert
+    #notice.alert.alert-danger
+      = alert
+      a.close type="button" data-dismiss="alert" &times;
+
+  = simple_form_for(@preorder) do |b|
+    - b.with_options disabled: true do |b|
+      = render :partial => 'preorder', :locals => { :f => b }
+
+  hr
+
+  - if @preorder.used
+    .alert.alert-info
+      = fa_icon "hand-pointer-o"
+      ' 
+      |您的信息已经使用，请查看您的订单记录。如有任何疑问，请联系客服。
+
+    = link_to free_insurance_path(@preorder.free_insurance.id), class: "btn btn-lg btn-primary btn-block" do
+      = fa_icon "file-text-o"
+      ' 
+      '前往查看您的订单记录
+  - else
+    = link_to new_free_insurance_path, class: "btn btn-lg btn-success btn-block" do
+        = fa_icon "hand-pointer-o"
+        ' 
+        '前往核准您的免费保险
+  br

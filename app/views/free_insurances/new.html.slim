@@ -1,5 +1,5 @@
 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-  h1.text-primary 核实您的信息
+  h3.text-primary 请再次核实您的信息
   hr
 
   - if notice
@@ -18,13 +18,23 @@
       = f.input :user
       = f.input :mobile, as: :tel, placeholder: "11位手机号，例如：13912345678"      
 
-      = f.input :gender, 
+      - if @free_insurance.gender
+        = f.input :gender, 
+            collection: [[true, '男'], [false, '女']], 
+            label_method: :last, 
+            value_method: :first,
+            as: :radio_buttons, 
+            item_wrapper_class: 'radio-inline',
+            checked: true,
+            label: false
+      - else
+        = f.input :gender, 
           collection: [[true, '男'], [false, '女']], 
           label_method: :last, 
           value_method: :first,
           as: :radio_buttons, 
           item_wrapper_class: 'radio-inline',
-          checked: true,
+          checked: false,
           label: false
 
       = f.input :id_num, placeholder: "身份证号码"
@@ -33,6 +43,7 @@
       = f.input :birthday, as: :date, start_year: Date.today.year - 60,
                 end_year: Date.today.year - 18, html5: true
       = f.input :city, disabled: true, value: "成都市", placeholder: "成都市"
+      = f.input :preorder_id, disabled: true
       = f.input :accepted_all_terms, as: :boolean, checked_value: true, unchecked_value: false
       / = link_to '投保须知详情', all_terms_path, class: 'terms'
       / The toggler of the details.

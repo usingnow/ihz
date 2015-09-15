@@ -17,6 +17,23 @@ class FreeInsurancesController < ApplicationController
   # GET /free_insurances/new
   def new
     @free_insurance = FreeInsurance.new
+
+    if session[:po_id]
+      @free_insurance.preorder_id = session[:po_id]
+      po = @free_insurance.preorder
+      @free_insurance.user = po.user
+      @free_insurance.mobile = po.mobile
+      @free_insurance.id_num = po.id_num
+      @free_insurance.gender = po.gender
+
+      session[:po_id] = nil
+    else session[:user]&&session[:mobile]
+      @free_insurance.user = session[:user]
+      @free_insurance.mobile = session[:mobile]
+
+      session[:user] = nil
+      session[:mobile] = nil
+    end
   end
 
   # GET /free_insurances/1/edit
@@ -33,13 +50,18 @@ class FreeInsurancesController < ApplicationController
     @free_insurance.address = "成都市"
     @free_insurance.id_type = "IdentityCard"
     if @free_insurance.save # 如果订单能生成，现在本地验证。
+      # 将预订设为已用。如果调用MetLife失败，则需要联系客服。因为，订单记录已经生成，如果有问题，则为业务问题。
+      @free_insurance.preorder.used = true
+      @free_insurance.preorder.save
       begin
         response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
         
         result = FreeInsurance.response_from_metlife(response)
 
-        puts '-------'
+        # This is to put the original response from Metlife
+        puts '-------------------------------------------------'
         puts result
+        puts ''
 
         if result
           fi_num = ""
@@ -111,22 +133,6 @@ class FreeInsurancesController < ApplicationController
 
   def validate_user_of
 
-  end
-
-  def validate_result_of
-    result = FreeInsurance.search(params[:user], params[:mobile])
-    @free_insurance = result.first
-    if @free_insurance.blank?
-      @free_insurance = FreeInsurance.new
-      @free_insurance.user = params[:user]
-      @free_insurance.mobile = params[:mobile]
-      respond_to do |format|
-        flash[:alert] = "查无此单。请确认您输入的信息，或者选择新建您的订单记录。"
-        format.html { render :new }
-      end
-    else # Make sure there are other logics here.
-      @free_insurance
-    end
   end
 
   def all_terms

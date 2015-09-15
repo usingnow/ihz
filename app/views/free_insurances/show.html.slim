@@ -1,5 +1,5 @@
 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-  .h1.text-primary 您的免费保险详情
+  .h3.text-primary 您的免费保险订单详情
   hr
 
   - if notice
@@ -20,10 +20,11 @@
   .alert.alert-info
     = fa_icon "exclamation-circle"
     ' 
-    '领取成功后，保险公司将在3个工作日内以短信方式通知您。您可以随时在本公众平台查询产品订单记录。为充分提升保障利益，此保障由4份计划构成。您会收到四份单独的保单凭证号。同时您可通过：我的产品》产品验真，登录产品提供方的界面，进行4份计划的单独产品验真。
+    '领取成功后，保险公司将在3个工作日内以短信方式通知您。您可以随时在本公众平台查询产品订单记录。为充分提升保障利益，此保障由4份计划构成。您会收到四份单独的保单凭证号。同时您可通过：我的产品 》产品验真，登录产品提供方的界面，进行4份计划的单独产品验真。
 
   = link_to '立即前往验真', metlife_verification_path, class: "btn btn-success btn-lg btn-block"
 
+  br
   / = link_to 'Edit', edit_free_insurance_path(@free_insurance)
   / '|
   / = link_to 'Back', free_insurances_path

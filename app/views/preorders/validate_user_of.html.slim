@@ -1,6 +1,6 @@
 .col-xs-12.col-sm-12.col-md-12.col-lg-12
 
-  h1.text-primary 核实您的免费保险
+  h3.text-primary 查找您的免费保险预定
   hr
 
   - if notice
@@ -12,7 +12,7 @@
       = alert
       a.close type="button" data-dismiss="alert" &times;
 
-  = form_tag validate_result_of_free_insurances_path, method: 'get', class: 'simple-form' do
+  = form_tag validate_result_of_preorders_path, method: 'get', class: 'simple-form' do
 
     .form-inputs
       .form-group
@@ -23,9 +23,9 @@
       = button_tag(type: 'submit', :name => nil, class: "btn btn-primary btn-lg btn-block") do
         = fa_icon "search"
         ' 
-        '核实您的保险
+        '查找您的免费保险预定
   br
   .alert.alert-info
     =fa_icon "exclamation-circle"
     ' 
-    '请确保您填写申请时的姓名和手机号码，否则可能无法查询到您的记录。
+    '请确保您填写申请时的姓名和手机号码，否则可能无法查询到您的免费保险预定。

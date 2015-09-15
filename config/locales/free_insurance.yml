@@ -10,3 +10,6 @@ zh-CN:
         id_num: "身份证号码"
         accepted_all_terms: "已阅读投保须知"
         free_insurance_no: "保险凭证号"
+        city: 所在城市
+        preorder_id: 保险预订号
+        email: 电子邮件

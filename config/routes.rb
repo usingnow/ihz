@@ -5,6 +5,11 @@ Rails.application.routes.draw do
     # end
     collection do
       get :search_result_of
+    end
+  end
+
+  resources :preorders do
+    collection do
       get :validate_result_of
     end
   end
@@ -12,7 +17,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'free_insurances#validate_user_of'
+  root 'preorders#validate_user_of'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -20,7 +25,7 @@ Rails.application.routes.draw do
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
-  get 'validate_user_of' => 'free_insurances#validate_user_of', as: :validate_user_of
+  get 'validate_user_of' => 'preorders#validate_user_of', as: :validate_user_of
   get 'all_terms' => 'free_insurances#all_terms', as: :all_terms
   get 'search_page_of' => 'free_insurances#search_page_of', as: :search_page_of
   get 'metlife_verification' => 'free_insurances#metlife_verification', as: :metlife_verification

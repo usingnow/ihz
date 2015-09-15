@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150910145212) do
+ActiveRecord::Schema.define(version: 20150915102539) do
 
   create_table "free_insurances", force: :cascade do |t|
     t.string   "user",               limit: 255
@@ -32,6 +32,25 @@ ActiveRecord::Schema.define(version: 20150910145212) do
     t.boolean  "accepted_all_terms"
     t.string   "metlife_msg",        limit: 255
     t.string   "free_insurance_no",  limit: 255
+    t.integer  "preorder_id",        limit: 4
   end
+
+  add_index "free_insurances", ["id"], name: "index_free_insurances_on_id", using: :btree
+  add_index "free_insurances", ["mobile"], name: "index_free_insurances_on_mobile", using: :btree
+  add_index "free_insurances", ["preorder_id"], name: "index_free_insurances_on_preorder_id", using: :btree
+  add_index "free_insurances", ["user"], name: "index_free_insurances_on_user", using: :btree
+
+  create_table "preorders", force: :cascade do |t|
+    t.string   "user",       limit: 255
+    t.string   "id_num",     limit: 255
+    t.boolean  "gender"
+    t.string   "mobile",     limit: 255
+    t.text     "remarks",    limit: 65535
+    t.boolean  "used"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "preorders", ["id"], name: "index_preorders_on_id", using: :btree
 
 end
