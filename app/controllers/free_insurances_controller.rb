@@ -55,13 +55,18 @@ class FreeInsurancesController < ApplicationController
       @free_insurance.preorder.save
       begin
         response = FreeInsurance.send_to_metlife(@free_insurance)  # Try to send the data to MetLife.
+
+        # This is to put the original response from Metlife
+        puts '-------------------------------------------------'
+        puts response
+        puts '-------------------------------------------------'        
         
         result = FreeInsurance.response_from_metlife(response)
 
         # This is to put the original response from Metlife
         puts '-------------------------------------------------'
         puts result
-        puts ''
+        puts '-------------------------------------------------'
 
         if result
           fi_num = ""

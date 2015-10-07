@@ -101,12 +101,26 @@ class FreeInsurance < ActiveRecord::Base
       msg[present_code] = FreeInsurance.build_xml_of_free_insurance(fi, present_code)
     end
 
+    # # Debug the API performance.
+    # puts 'XXXXXXXXXXXXXXXXXX'
+    # msg.each do |m|
+    #   puts m
+    # end
+    # puts 'XXXXXXXXXXXXXXXXXX'
+
     response = Hash.new
     
     msg.each do |key, message|
       response[key] = client.call(:do_request, message: { xml_input: message })
-      puts response[key].body
     end
+
+    # # Debug the API performance.
+    # puts 'XXXXXXXXXXXXXXXXXX'
+    # response.each do |r|
+    #   puts r
+    # end
+    # puts 'XXXXXXXXXXXXXXXXXX'
+
     return response
   end
 
